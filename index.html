@@ -4,11 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
-    <title>Hello World</title>
+    <title>Document</title>
+    <style>
+    body
+    {
+        background-color: #242e35;
+    }
+    div
+    {
+        width: 80%;
+        margin: 0 auto;
+    }
+    img
+    {
+        max-width: 100%;
+    }
+    p
+    {
+        color: #ffffff;
+        text-align: center;
+        font-size: 300%;
+    }
+    span
+    {
+        font-size: 200%;
+    }
+    </style>
 </head>
 <body>
-   <img src="iss.jpg" width="100" height="100" alt="iss">
-    <p></p>
+    <div>
+            <img src="ISS_0.png" alt="">
+    </div>
+    <p>You will be able to see ISS at <span>?</span>.</p>
+ 
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (pos) { 
+                console.log(pos.coords.longitude)
+                $.getJSON('http://api.open-notify.org/iss-pass.json?lat='+parseFloat(pos.coords.latitude)+'&lon='+parseFloat(pos.coords.longitude)+'&alt=20&n=5&callback=?', function(data) {
+                data['response'].forEach(function (d) {
+                    var date = new Date(d['risetime']*1000);
+                    var time = document.querySelector('span')
+                    time.innerText = date.getHours() + ':' + date.getMinutes()
+                });
+            });
+            });
+        }
+    </script>
 </body>
 </html>
